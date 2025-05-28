@@ -17,16 +17,11 @@ import {
 import {
   Delete as DeleteIcon,
   Add as AddIcon,
-  DragIndicator as DragIcon,
+  ArrowUpward as ArrowUpwardIcon,
+  ArrowDownward as ArrowDownwardIcon,
 } from '@mui/icons-material';
 import type { Athlete } from '../types';
 import { texts } from '../config/texts';
-import {
-  DragDropContext,
-  Droppable,
-  Draggable,
-} from '@hello-pangea/dnd';
-import type { DropResult } from '@hello-pangea/dnd';
 
 interface AthleteManagementProps {
   athletes: Athlete[];
@@ -68,12 +63,13 @@ export const AthleteManagement: React.FC<AthleteManagementProps> = ({
     onAthletesChange(updated);
   };
 
-  const onDragEnd = (result: DropResult) => {
-    if (!result.destination) return;
-    const reordered = Array.from(athletes);
-    const [removed] = reordered.splice(result.source.index, 1);
-    reordered.splice(result.destination.index, 0, removed);
-    const updated = reordered.map((a, index) => ({ ...a, order: index }));
+  const moveAthlete = (index: number, direction: 'up' | 'down') => {
+    const newIndex = direction === 'up' ? index - 1 : index + 1;
+    if (newIndex < 0 || newIndex >= athletes.length) return;
+    const reordered = [...athletes];
+    const [moved] = reordered.splice(index, 1);
+    reordered.splice(newIndex, 0, moved);
+    const updated = reordered.map((a, idx) => ({ ...a, order: idx }));
     onAthletesChange(updated);
   };
 
@@ -127,15 +123,13 @@ export const AthleteManagement: React.FC<AthleteManagementProps> = ({
             }}
           />
         </Tooltip>
+        <Alert severity="info" sx={{ mt: 1 }}>
+          {texts.athleteManagement.addAthleteTooltip}
+        </Alert>
         {athletes.length === 0 && (
-          <>
-            <Alert severity="info" sx={{ mt: 1 }}>
-              Start by adding your athletes
-            </Alert>
-            <Alert severity="info" sx={{ mt: 1 }}>
-              {texts.athleteManagement.addAthleteTooltip}
-            </Alert>
-          </>
+          <Alert severity="info" sx={{ mt: 1 }}>
+            Start by adding your athletes
+          </Alert>
         )}
         {athletes.length >= 30 && (
           <Typography variant="caption" color="error" sx={{ mt: 1 }}>
@@ -144,43 +138,44 @@ export const AthleteManagement: React.FC<AthleteManagementProps> = ({
         )}
       </Box>
 
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="athlete-list">
-          {(provided) => (
-            <List ref={provided.innerRef} {...provided.droppableProps}>
-              {athletes.map((athlete, index) => (
-                <Draggable key={athlete.id} draggableId={athlete.id} index={index}>
-                  {(provided, snapshot) => (
-                    <ListItem
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      sx={{
-                        mb: 1,
-                        bgcolor: snapshot.isDragging ? 'action.selected' : 'background.paper',
-                        borderRadius: 1,
-                        cursor: 'grab',
-                        boxShadow: snapshot.isDragging ? 3 : 0,
-                        touchAction: 'auto',
-                        userSelect: 'none',
-                      }}
-                    >
-                      <DragIcon sx={{ mr: 1, color: 'text.secondary' }} />
-                      <Box sx={{ flexGrow: 1 }}>
-                        <Typography>{athlete.name}</Typography>
-                      </Box>
-                      <IconButton onClick={() => removeAthlete(athlete.id)} size="small">
-                        <DeleteIcon />
-                      </IconButton>
-                    </ListItem>
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
-            </List>
-          )}
-        </Droppable>
-      </DragDropContext>
+      <List>
+        {athletes.map((athlete, index) => (
+          <ListItem
+            key={athlete.id}
+            sx={{
+              mb: 1,
+              bgcolor: 'background.paper',
+              borderRadius: 1,
+              userSelect: 'none',
+            }}
+          >
+            <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+              <Box sx={{ flexGrow: 1 }}>
+                <Typography>{athlete.name}</Typography>
+              </Box>
+              <IconButton
+                onClick={() => moveAthlete(index, 'up')}
+                size="small"
+                disabled={index === 0}
+                aria-label="Move up"
+              >
+                <ArrowUpwardIcon />
+              </IconButton>
+              <IconButton
+                onClick={() => moveAthlete(index, 'down')}
+                size="small"
+                disabled={index === athletes.length - 1}
+                aria-label="Move down"
+              >
+                <ArrowDownwardIcon />
+              </IconButton>
+              <IconButton onClick={() => removeAthlete(athlete.id)} size="small">
+                <DeleteIcon />
+              </IconButton>
+            </Box>
+          </ListItem>
+        ))}
+      </List>
 
       <Box sx={{ mt: 4, display: 'flex', gap: 2, justifyContent: 'center' }}>
         {athletes.length > 0 && (
