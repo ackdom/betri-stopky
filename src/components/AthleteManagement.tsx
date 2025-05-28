@@ -123,20 +123,19 @@ export const AthleteManagement: React.FC<AthleteManagementProps> = ({
             }}
           />
         </Tooltip>
-
         {showNameError && (
           <Alert severity="error" sx={{ mt: 1 }}>
             {texts.athleteManagement.addAthleteTooltip}
           </Alert>
         )}
-         {athletes.length > 0 && (
-        <Alert severity="info" sx={{ mb: 2 }}>
-          {texts.athleteManagement.previousListReady}
-        </Alert>
-      )}
         {athletes.length === 0 && (
           <Alert severity="info" sx={{ mt: 1 }}>
             Start by adding your athletes
+          </Alert>
+        )}
+        {athletes.length > 0 && (
+          <Alert severity="info" sx={{ mb: 2 }}>
+            {texts.athleteManagement.previousListReady}
           </Alert>
         )}
         {athletes.length >= 30 && (
