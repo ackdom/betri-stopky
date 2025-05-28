@@ -134,7 +134,7 @@ export const AthleteManagement: React.FC<AthleteManagementProps> = ({
           </Alert>
         )}
         {athletes.length > 0 && (
-          <Alert severity="info" sx={{ mb: 2 }}>
+          <Alert severity="info" sx={{ mt: 1 }}>
             {texts.athleteManagement.previousListReady}
           </Alert>
         )}
