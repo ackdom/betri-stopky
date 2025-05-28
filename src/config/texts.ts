@@ -48,7 +48,7 @@ export const texts = {
     tapToStart: 'Tap to start',
     tapToResume: 'Tap to resume',
     splitFeatureInfo:
-      'Tap the orange area on the right to record splits (intermediate times) for each athlete. You can record multiple splits per athlete.',
+      'Tap the orange area on the right to record splits (intermediate times) for each athlete. Only the last 3 splits are displayed, but all are recorded and shown in the results.',
   },
 
   // Summary page
