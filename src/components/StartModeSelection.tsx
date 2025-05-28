@@ -12,7 +12,7 @@ import {
   FormControl,
   InputLabel,
 } from '@mui/material';
-import type { SessionConfig, StartMode } from '../types';
+import type { SessionConfig, StartMode } from '../types/index';
 import { texts } from '../config/texts';
 
 interface StartModeSelectionProps {

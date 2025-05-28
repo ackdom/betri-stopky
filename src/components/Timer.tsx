@@ -5,7 +5,7 @@ import {
   Paper,
   Tooltip,
 } from '@mui/material';
-import type { TimerState, Athlete } from '../types';
+import type { TimerState, Athlete } from '../types/index';
 import { texts } from '../config/texts';
 import { formatTime } from '../utils/timer';
 import { triggerHapticFeedback, createVisualFeedback } from '../utils/feedback';

@@ -20,7 +20,7 @@ import {
   DialogActions,
   TextField,
 } from '@mui/material';
-import type { SessionResult, ViewMode } from '../types';
+import type { SessionResult, ViewMode } from '../types/index';
 import { texts } from '../config/texts';
 import { formatTime } from '../utils/timer';
 

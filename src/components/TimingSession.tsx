@@ -10,7 +10,7 @@ import {
 import {
   PlayArrow as PlayIcon,
 } from '@mui/icons-material';
-import type { Athlete, SessionConfig, TimerState, SessionResult } from '../types';
+import type { Athlete, SessionConfig, TimerState, SessionResult } from '../types/index';
 import { texts } from '../config/texts';
 import { Timer } from './Timer';
 import { triggerHapticFeedback, createVisualFeedback } from '../utils/feedback';

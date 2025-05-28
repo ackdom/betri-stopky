@@ -20,7 +20,7 @@ import {
   ArrowUpward as ArrowUpwardIcon,
   ArrowDownward as ArrowDownwardIcon,
 } from '@mui/icons-material';
-import type { Athlete } from '../types';
+import type { Athlete } from '../types/index';
 import { texts } from '../config/texts';
 
 interface AthleteManagementProps {

@@ -1,4 +1,4 @@
-import type { Athlete } from '../types';
+import type { Athlete } from '../types/index';
 
 const ATHLETES_KEY = 'betri-athletes';
 
