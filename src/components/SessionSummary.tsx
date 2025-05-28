@@ -85,6 +85,7 @@ export const SessionSummary: React.FC<SessionSummaryProps> = ({
                   <TableCell>{texts.summary.position}</TableCell>
                   <TableCell>{texts.summary.name}</TableCell>
                   <TableCell align="right">{texts.summary.time}</TableCell>
+                  <TableCell align="right">Splits</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -96,6 +97,21 @@ export const SessionSummary: React.FC<SessionSummaryProps> = ({
                       {result.finalTime !== null
                         ? formatTime(result.finalTime)
                         : texts.summary.didNotFinish}
+                    </TableCell>
+                    <TableCell align="right">
+                      {result.splits && result.splits.length > 0 && (
+                        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                          {result.splits.map((split, i) => (
+                            <Typography
+                              key={i}
+                              variant="caption"
+                              sx={{ color: '#E89800', fontFamily: 'monospace', lineHeight: 1.2 }}
+                            >
+                              {formatTime(split)}
+                            </Typography>
+                          ))}
+                        </Box>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))}

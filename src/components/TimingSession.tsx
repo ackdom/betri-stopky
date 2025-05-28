@@ -13,7 +13,7 @@ import {
 import type { Athlete, SessionConfig, TimerState, SessionResult } from '../types';
 import { texts } from '../config/texts';
 import { Timer } from './Timer';
-import { triggerHapticFeedback } from '../utils/feedback';
+import { triggerHapticFeedback, createVisualFeedback } from '../utils/feedback';
 
 interface TimingSessionProps {
   athletes: Athlete[];
@@ -37,6 +37,7 @@ export const TimingSession: React.FC<TimingSessionProps> = ({
         finalTime: null,
         isPaused: false,
         isRunning: false,
+        splits: [],
       };
     });
     return initial;
@@ -154,6 +155,7 @@ export const TimingSession: React.FC<TimingSessionProps> = ({
       athleteName: athlete.name,
       startOrder: athlete.order,
       finalTime: updatedTimers[athlete.id].finalTime,
+      splits: updatedTimers[athlete.id].splits,
     }));
 
     onSessionEnd(results);
@@ -225,6 +227,27 @@ export const TimingSession: React.FC<TimingSessionProps> = ({
             onStart={() => startTimer(athlete.id)}
             onPause={() => pauseTimer(athlete.id)}
             onResume={() => resumeTimer(athlete.id)}
+            onSplit={() => {
+              setTimers((prev) => {
+                const t = prev[athlete.id];
+                if (!t.startTime || t.finalTime !== null) return prev;
+                const now = t.isPaused && t.pausedTime ? t.pausedTime : Date.now();
+                const splitTime = now - t.startTime - t.totalPausedDuration;
+                return {
+                  ...prev,
+                  [athlete.id]: {
+                    ...t,
+                    splits: [...t.splits, splitTime],
+                  },
+                };
+              });
+              // Feedback: haptic + visual (orange)
+              triggerHapticFeedback('split');
+              const row = document.getElementById(`timer-row-${athlete.id}`);
+              if (row) {
+                createVisualFeedback(row, 'split');
+              }
+            }}
             canStart={canStartTimer(athlete.id)}
             triggerFeedback={feedbackTriggers[athlete.id]}
           />

@@ -12,6 +12,7 @@ export interface TimerState {
   finalTime: number | null;
   isPaused: boolean;
   isRunning: boolean;
+  splits: number[]; // Array of split times (ms)
 }
 
 export type StartMode = 'manual' | 'automatic';
@@ -26,6 +27,7 @@ export interface SessionResult {
   athleteName: string;
   startOrder: number;
   finalTime: number | null; // null means DNF
+  splits?: number[]; // Array of split times (ms)
 }
 
 export type ViewMode = 'start-order' | 'time-order';

@@ -16,6 +16,7 @@ interface TimerProps {
   onStart: () => void;
   onPause: () => void;
   onResume: () => void;
+  onSplit: () => void;
   canStart: boolean;
   triggerFeedback?: number; // Timestamp to trigger external feedback
 }
@@ -26,6 +27,7 @@ export const Timer: React.FC<TimerProps> = ({
   onStart,
   onPause,
   onResume,
+  onSplit,
   canStart,
   triggerFeedback,
 }) => {
@@ -99,6 +101,10 @@ export const Timer: React.FC<TimerProps> = ({
 
   const tooltipText = getTooltipText();
 
+  // Split area logic
+  const splitTimes = timerState.splits;
+  const lastSplits = splitTimes.slice(-3); // Up to 3 most recent
+
   return (
     <Tooltip 
       title={tooltipText} 
@@ -114,9 +120,9 @@ export const Timer: React.FC<TimerProps> = ({
     >
       <Paper
         ref={paperRef}
-        onClick={handleRowClick}
+        id={`timer-row-${athlete.id}`}
         sx={{
-          p: 2,
+          p: 0,
           mb: 2,
           transition: 'all 0.3s ease',
           backgroundColor: timerState.finalTime !== null ? 'action.hover' : 'background.paper',
@@ -125,9 +131,21 @@ export const Timer: React.FC<TimerProps> = ({
             backgroundColor: timerState.finalTime !== null ? 'action.hover' : 'action.hover',
           },
           opacity: !canStart && !timerState.isRunning ? 0.6 : 1,
+          display: 'flex',
+          alignItems: 'stretch',
         }}
       >
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        {/* Main timer area (75%) */}
+        <Box
+          onClick={handleRowClick}
+          sx={{
+            flex: '0 0 75%',
+            p: 2,
+            display: 'flex',
+            alignItems: 'center',
+            minWidth: 0,
+          }}
+        >
           <Box sx={{ flex: 1 }}>
             <Typography variant="h6" sx={{ fontWeight: 600 }}>
               {athlete.name}
@@ -143,6 +161,41 @@ export const Timer: React.FC<TimerProps> = ({
               {formatTime(currentTime)}
             </Typography>
           </Box>
+        </Box>
+        {/* Split area (25%) */}
+        <Box
+          onClick={(e) => {
+            e.stopPropagation();
+            onSplit();
+          }}
+          sx={{
+            flex: '0 0 25%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: 'rgba(232, 152, 0, 0.15)', // Lighter Betri orange
+            cursor: 'pointer',
+            borderLeft: '2px solid #E89800',
+            minHeight: 64,
+            userSelect: 'none',
+          }}
+        >
+          {lastSplits.length === 0 ? (
+            <Typography variant="button" sx={{ color: '#E89800', opacity: 0.7 }}>
+              Split
+            </Typography>
+          ) : (
+            lastSplits.map((split, idx) => (
+              <Typography
+                key={idx}
+                variant="caption"
+                sx={{ color: '#E89800', opacity: 0.9, fontFamily: 'monospace', lineHeight: 1.2 }}
+              >
+                {formatTime(split)}
+              </Typography>
+            ))
+          )}
         </Box>
       </Paper>
     </Tooltip>
