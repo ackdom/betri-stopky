@@ -114,7 +114,7 @@ export const AthleteManagement: React.FC<AthleteManagementProps> = ({
       )}
 
       <Box sx={{ mb: 3 }}>
-        <Tooltip title={athletes.length === 0 ? 'Start by adding your athletes' : texts.athleteManagement.addAthleteTooltip}>
+        <Tooltip title={athletes.length === 0 ? '' : texts.athleteManagement.addAthleteTooltip}>
           <TextField
             fullWidth
             value={newAthleteName}
@@ -134,6 +134,11 @@ export const AthleteManagement: React.FC<AthleteManagementProps> = ({
             }}
           />
         </Tooltip>
+        {athletes.length === 0 && (
+          <Alert severity="info" sx={{ mt: 1 }}>
+            Start by adding your athletes
+          </Alert>
+        )}
         {athletes.length >= 30 && (
           <Typography variant="caption" color="error" sx={{ mt: 1 }}>
             {texts.athleteManagement.maxAthletesReached}
