@@ -1,14 +1,15 @@
 # Betri Stop Watch
 
-A simple, responsive web app for timing and lapping swimmers/runners. Users can add athletes, start/stop individual stopwatches, and view results. Designed for mobile-first use with PWA capabilities.
+A simple, responsive web app for timing and lapping swimmers/runners. Users can add athletes, start/stop individual stopwatches, record splits, and view results. Designed for mobile-first use with PWA capabilities.
 
 ## Features
 
-- **Athlete Management**: Add up to 30 athletes with drag-and-drop reordering
+- **Athlete Management**: Add up to 30 athletes with manual up/down reordering (no drag-and-drop)
 - **Two Start Modes**: 
   - Manual Start: Start each athlete's timer individually
   - Automatic Gap: Timers start automatically with configurable delays (5/10/15/20/30 seconds)
-- **Timer Controls**: Pause, resume, and stop individual timers
+- **Timer Controls**: Pause and resume individual timers (pausing is considered stopped for results)
+- **Splits**: Record split times for each athlete during timing, view splits in a dedicated column on the summary page
 - **Results Summary**: View results ordered by start position or finish time
 - **Offline Support**: Works as a Progressive Web App (PWA)
 - **Mobile-First Design**: Optimized for touch devices with haptic feedback
@@ -18,8 +19,9 @@ A simple, responsive web app for timing and lapping swimmers/runners. Users can 
 ### 1. Adding Athletes
 1. Enter athlete names in the input field
 2. Press Enter or click the + button to add
-3. Drag athletes to reorder them
+3. Use up/down arrows to reorder athletes
 4. Click the trash icon to remove an athlete
+5. If you try to add an empty name, an error alert is shown
 
 ### 2. Starting a Session
 1. After adding athletes, click "Start Session"
@@ -29,12 +31,20 @@ A simple, responsive web app for timing and lapping swimmers/runners. Users can 
 ### 3. Timing Athletes
 - **Manual Mode**: Click play button for each athlete in sequence
 - **Automatic Mode**: Start the first athlete, others follow automatically
-- Use pause/resume buttons for each timer as needed
-- Click "Stop All" to end the session
+- Tap a row to pause/resume a timer (pausing is considered stopped)
+- The rightmost 25% of each athlete row is a **Split** button/area:
+  - Tap to record a split (can be pressed multiple times)
+  - If no splits: shows "Split" label
+  - If splits: shows up to 3 most recent split times (top=first, bottom=last)
+  - Button background is a lighter/opacity Betri orange
+  - Pressing split triggers orange haptic/visual feedback
+- The "See Results" button is only enabled when all timers are paused
+- The "Back"/"Stop & Back" button is shown next to "See Results"
 
 ### 4. Viewing Results
 - Results show in start order by default
 - Toggle to view by finish time
+- **Splits**: Each athlete's splits are shown in a dedicated "Splits" column (one per line, top=first, bottom=last)
 - Take a screenshot to save results
 - Click "New Timing" to start another session with the same athletes
 
@@ -142,4 +152,3 @@ firebase deploy --only hosting
 - CSV export of results
 - Dark mode support
 - Settings for haptic feedback
-# betri-stopky
