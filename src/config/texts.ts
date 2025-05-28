@@ -64,6 +64,11 @@ export const texts = {
     name: 'Name',
     time: 'Time',
     didNotFinish: 'DNF',
+    exportCsv: 'Export CSV',
+    exportCsvTooltip: 'Export results as CSV',
+    exportCsvDialogTitle: 'Export CSV',
+    exportCsvFileNameLabel: 'File name',
+    exportCsvConfirm: 'Export',
   },
 
   // Common actions
