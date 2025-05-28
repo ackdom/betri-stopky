@@ -47,6 +47,8 @@ export const texts = {
     startNextAthleteTooltip: 'Tap to start timing the next athlete',
     tapToStart: 'Tap to start',
     tapToResume: 'Tap to resume',
+    splitFeatureInfo:
+      'Tap the orange area on the right to record splits (intermediate times) for each athlete. You can record multiple splits per athlete.',
   },
 
   // Summary page

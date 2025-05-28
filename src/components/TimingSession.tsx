@@ -297,27 +297,15 @@ export const TimingSession: React.FC<TimingSessionProps> = ({
       )}
 
       {!hasAnyTimerStarted && (
-        <Box sx={{ textAlign: 'center', mb: 3, display: 'flex', justifyContent: 'center', gap: 2 }}>
-          <Button
-            variant="outlined"
-            color="error"
-            size="large"
-            onClick={() => window.location.reload()}
-            sx={{ minWidth: 160, maxWidth: 220, px: 3 }}
-          >
-            Back
-          </Button>
-        </Box>
-      )}
-
-      {/* Show tooltips below table and buttons before timing starts */}
-      {!hasAnyTimerStarted && (
         <Box sx={{ mt: 2 }}>
           <Alert severity="info" sx={{ mb: 1 }}>
             {texts.stopwatch.pauseTooltip}
           </Alert>
-          <Alert severity="info">
+          <Alert severity="info" sx={{ mb: 1 }}>
             {texts.stopwatch.resumeHelp}
+          </Alert>
+          <Alert severity="info">
+            {texts.stopwatch.splitFeatureInfo}
           </Alert>
         </Box>
       )}
