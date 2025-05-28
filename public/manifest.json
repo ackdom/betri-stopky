@@ -1,0 +1,19 @@
+{
+  "name": "Betri Stop Watch",
+  "short_name": "Betri Timer",
+  "description": "A simple, responsive web app for timing swimmers and runners",
+  "theme_color": "#E89800",
+  "background_color": "#FFFFFF",
+  "display": "standalone",
+  "orientation": "portrait",
+  "scope": "/",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
