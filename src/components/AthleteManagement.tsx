@@ -36,11 +36,14 @@ export const AthleteManagement: React.FC<AthleteManagementProps> = ({
 }) => {
   const [newAthleteName, setNewAthleteName] = useState('');
   const [showClearDialog, setShowClearDialog] = useState(false);
+  const [showNameError, setShowNameError] = useState(false);
 
   const addAthlete = () => {
     if (newAthleteName.trim().length === 0) {
+      setShowNameError(true);
       return;
     }
+    setShowNameError(false);
 
     if (athletes.length >= 30) {
       return;
@@ -103,11 +106,14 @@ export const AthleteManagement: React.FC<AthleteManagementProps> = ({
       )}
 
       <Box sx={{ mb: 3 }}>
-        <Tooltip title={athletes.length === 0 ? '' : texts.athleteManagement.addAthleteTooltip}>
+        <Tooltip title="">
           <TextField
             fullWidth
             value={newAthleteName}
-            onChange={(e) => setNewAthleteName(e.target.value)}
+            onChange={(e) => {
+              setNewAthleteName(e.target.value);
+              if (showNameError) setShowNameError(false);
+            }}
             onKeyPress={(e) => e.key === 'Enter' && addAthlete()}
             placeholder={texts.athleteManagement.athleteNamePlaceholder}
             disabled={athletes.length >= 30}
@@ -123,9 +129,11 @@ export const AthleteManagement: React.FC<AthleteManagementProps> = ({
             }}
           />
         </Tooltip>
-        <Alert severity="info" sx={{ mt: 1 }}>
-          {texts.athleteManagement.addAthleteTooltip}
-        </Alert>
+        {showNameError && (
+          <Alert severity="error" sx={{ mt: 1 }}>
+            {texts.athleteManagement.addAthleteTooltip}
+          </Alert>
+        )}
         {athletes.length === 0 && (
           <Alert severity="info" sx={{ mt: 1 }}>
             Start by adding your athletes
