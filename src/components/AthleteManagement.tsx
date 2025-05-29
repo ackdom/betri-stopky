@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   TextField,
@@ -13,6 +13,7 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  Paper,
 } from '@mui/material';
 import {
   Delete as DeleteIcon,
@@ -22,6 +23,8 @@ import {
 } from '@mui/icons-material';
 import type { Athlete } from '../types/index';
 import { texts } from '../config/texts';
+import { storage } from '../utils/storage';
+import CloseIcon from '@mui/icons-material/Close';
 
 interface AthleteManagementProps {
   athletes: Athlete[];
@@ -37,6 +40,18 @@ export const AthleteManagement: React.FC<AthleteManagementProps> = ({
   const [newAthleteName, setNewAthleteName] = useState('');
   const [showClearDialog, setShowClearDialog] = useState(false);
   const [showNameError, setShowNameError] = useState(false);
+  const [nameSuggestions, setNameSuggestions] = useState<string[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+
+  useEffect(() => {
+    setNameSuggestions(storage.loadAthleteNames());
+  }, []);
+
+  const filteredSuggestions = nameSuggestions.filter(
+    (name) =>
+      name.toLowerCase().includes(newAthleteName.trim().toLowerCase()) &&
+      !athletes.some((a) => a.name.toLowerCase() === name.toLowerCase())
+  );
 
   const addAthlete = () => {
     if (newAthleteName.trim().length === 0) {
@@ -56,7 +71,10 @@ export const AthleteManagement: React.FC<AthleteManagementProps> = ({
     };
 
     onAthletesChange([...athletes, newAthlete]);
+    storage.saveAthleteName(newAthlete.name);
+    setNameSuggestions(storage.loadAthleteNames());
     setNewAthleteName('');
+    setShowSuggestions(false);
   };
 
   const removeAthlete = (id: string) => {
@@ -99,7 +117,7 @@ export const AthleteManagement: React.FC<AthleteManagementProps> = ({
         <Typography variant="h1">{texts.appName}</Typography>
       </Box>
 
-      <Box sx={{ mb: 3 }}>
+      <Box sx={{ mb: 3, position: 'relative' }}>
         <Tooltip title="">
           <TextField
             fullWidth
@@ -107,7 +125,10 @@ export const AthleteManagement: React.FC<AthleteManagementProps> = ({
             onChange={(e) => {
               setNewAthleteName(e.target.value);
               if (showNameError) setShowNameError(false);
+              setShowSuggestions(true);
             }}
+            onFocus={() => setShowSuggestions(true)}
+            onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
             onKeyPress={(e) => e.key === 'Enter' && addAthlete()}
             placeholder={texts.athleteManagement.athleteNamePlaceholder}
             disabled={athletes.length >= 30}
@@ -123,6 +144,51 @@ export const AthleteManagement: React.FC<AthleteManagementProps> = ({
             }}
           />
         </Tooltip>
+        {showSuggestions && filteredSuggestions.length > 0 && (
+          <Paper
+            sx={{
+              position: 'absolute',
+              left: 0,
+              right: 0,
+              zIndex: 10,
+              mt: 0.5,
+              maxHeight: 200,
+              overflowY: 'auto',
+            }}
+            elevation={3}
+          >
+            {filteredSuggestions.map((name) => (
+              <Box
+                key={name}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  px: 2,
+                  py: 1,
+                  cursor: 'pointer',
+                  '&:hover': { bgcolor: 'action.hover' },
+                }}
+                onMouseDown={() => {
+                  setNewAthleteName(name);
+                  setShowSuggestions(false);
+                }}
+              >
+                <Typography sx={{ flex: 1 }}>{name}</Typography>
+                <IconButton
+                  size="small"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    storage.removeAthleteName(name);
+                    setNameSuggestions(storage.loadAthleteNames());
+                  }}
+                  aria-label="Remove suggestion"
+                >
+                  <CloseIcon fontSize="small" />
+                </IconButton>
+              </Box>
+            ))}
+          </Paper>
+        )}
         {showNameError && (
           <Alert severity="error" sx={{ mt: 1 }}>
             {texts.athleteManagement.addAthleteTooltip}
