@@ -49,6 +49,7 @@ export const AthleteManagement: React.FC<AthleteManagementProps> = ({
 
   const filteredSuggestions = nameSuggestions.filter(
     (name) =>
+      newAthleteName.trim().length >= 2 &&
       name.toLowerCase().includes(newAthleteName.trim().toLowerCase()) &&
       !athletes.some((a) => a.name.toLowerCase() === name.toLowerCase())
   );
@@ -169,7 +170,17 @@ export const AthleteManagement: React.FC<AthleteManagementProps> = ({
                   '&:hover': { bgcolor: 'action.hover' },
                 }}
                 onMouseDown={() => {
-                  setNewAthleteName(name);
+                  if (!athletes.some((a) => a.name.toLowerCase() === name.toLowerCase())) {
+                    const newAthlete: Athlete = {
+                      id: Date.now().toString(),
+                      name,
+                      order: athletes.length,
+                    };
+                    onAthletesChange([...athletes, newAthlete]);
+                    storage.saveAthleteName(name);
+                    setNameSuggestions(storage.loadAthleteNames());
+                  }
+                  setNewAthleteName('');
                   setShowSuggestions(false);
                 }}
               >

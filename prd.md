@@ -7,6 +7,12 @@ A simple, responsive web app for timing and lapping swimmers/runners. Users can 
 
 ## 1. Athlete Management
 - Users can add up to 30 athletes via an input field and plus button.
+- Athlete name input features autocomplete with local memory:
+  - As the user types, a dropdown shows suggestions from previously entered athlete names (persisted in localStorage).
+  - Clicking a suggestion immediately adds it as a new athlete (if not already in the list).
+  - Each suggestion has an "X" icon to remove it from local memory.
+  - Suggestions exclude names already in the current athlete list.
+  - Local memory persists across sessions (unless browser storage is cleared).
 - Each athlete must have a name (minimum 1 character).
   - If the user tries to add an empty name, an error alert is shown: "Each athlete must have a name (at least 1 character)."
 - Athletes can be reordered before starting the session using up/down arrow buttons on each row (no drag-and-drop).

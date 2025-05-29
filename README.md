@@ -4,7 +4,7 @@ A simple, responsive web app for timing and lapping swimmers/runners. Users can 
 
 ## Features
 
-- **Athlete Management**: Add up to 30 athletes with manual up/down reordering (no drag-and-drop)
+- **Athlete Management & Autocomplete**: Add up to 30 athletes with manual up/down reordering (no drag-and-drop), and benefit from local name autocomplete with memory and removal
 - **Two Start Modes**: 
   - Manual Start: Start each athlete's timer individually
   - Automatic Gap: Timers start automatically with configurable delays (5/10/15/20/30 seconds)
@@ -18,10 +18,20 @@ A simple, responsive web app for timing and lapping swimmers/runners. Users can 
 
 ### 1. Adding Athletes
 1. Enter athlete names in the input field
-2. Press Enter or click the + button to add
-3. Use up/down arrows to reorder athletes
-4. Click the trash icon to remove an athlete
-5. If you try to add an empty name, an error alert is shown
+2. As you type, suggestions from previously entered names (local memory) appear in a dropdown
+3. Click a suggestion to immediately add it as a new athlete
+4. Each suggestion has an "X" icon to remove it from memory
+5. Press Enter or click the + button to add a new name
+6. Use up/down arrows to reorder athletes
+7. Click the trash icon to remove an athlete
+8. If you try to add an empty name, an error alert is shown
+
+#### Athlete Name Autocomplete & Local Memory
+- The app remembers all unique athlete names you've entered (stored in your browser)
+- Suggestions appear as you type, excluding names already in your current list
+- Click a suggestion to add it instantly
+- Remove any suggestion from memory with the X icon
+- Memory persists across sessions (unless you clear browser storage)
 
 ### 2. Starting a Session
 1. After adding athletes, click "Start Session"
