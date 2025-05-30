@@ -232,7 +232,15 @@ export const TimingSession: React.FC<TimingSessionProps> = ({
                 const t = prev[athlete.id];
                 if (!t.startTime || t.finalTime !== null) return prev;
                 const now = t.isPaused && t.pausedTime ? t.pausedTime : Date.now();
-                const splitTime = now - t.startTime - t.totalPausedDuration;
+                // Each split is now the time since the previous split (not total elapsed)
+                let splitTime = 0;
+                if (t.splits.length === 0) {
+                  splitTime = now - t.startTime - t.totalPausedDuration;
+                } else {
+                  // Last split was at t.splits.reduce((a, b) => a + b, 0) ms after start
+                  const lastCumulative = t.splits.reduce((a, b) => a + b, 0);
+                  splitTime = now - t.startTime - t.totalPausedDuration - lastCumulative;
+                }
                 return {
                   ...prev,
                   [athlete.id]: {

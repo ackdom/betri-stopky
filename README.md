@@ -48,6 +48,7 @@ A simple, responsive web app for timing and lapping swimmers/runners. Users can 
   - If splits: shows up to 3 most recent split times (top=first, bottom=last)
   - Button background is a lighter/opacity Betri orange
   - Pressing split triggers orange haptic/visual feedback
+  - **Each split now shows the time between splits (interval), not total elapsed time.**
 - The "See Results" button is only enabled when all timers are paused
 - The "Back"/"Stop & Back" button is shown next to "See Results"
 
@@ -55,6 +56,7 @@ A simple, responsive web app for timing and lapping swimmers/runners. Users can 
 - Results show in start order by default
 - Toggle to view by finish time
 - **Splits**: Each athlete's splits are shown in a dedicated "Splits" column (one per line, top=first, bottom=last)
+- **Splits now show the interval (time between splits), not total elapsed time.**
 - Take a screenshot to save results
 - Click "New Timing" to start another session with the same athletes
 

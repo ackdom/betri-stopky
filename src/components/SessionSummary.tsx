@@ -154,6 +154,7 @@ export const SessionSummary: React.FC<SessionSummaryProps> = ({
                     <TableCell align="right">
                       {result.splits && result.splits.length > 0 && (
                         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                          {/* Now shows interval splits, not cumulative */}
                           {result.splits.map((split, i) => (
                             <Typography
                               key={i}

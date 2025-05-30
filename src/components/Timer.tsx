@@ -102,6 +102,7 @@ export const Timer: React.FC<TimerProps> = ({
   const tooltipText = getTooltipText();
 
   // Split area logic
+  // Now shows last 3 interval splits (not cumulative)
   const splitTimes = timerState.splits;
   const lastSplits = splitTimes.slice(-3); // Up to 3 most recent
 
